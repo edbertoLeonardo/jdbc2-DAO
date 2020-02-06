@@ -11,26 +11,26 @@ import java.util.Properties;
 
 public class DB {
 
-	private static Connection conn = null;
+	private static Connection connection = null;
 	
 	public static Connection getConnection() {
-		if (conn == null) {
+		if (connection == null) {
 			try {
-				Properties props = loadProperties();
-				String url = props.getProperty("dburl");
-				conn = DriverManager.getConnection(url, props);
+				Properties properties = loadProperties();
+				String url = properties.getProperty("dburl");
+				connection = DriverManager.getConnection(url, properties);
 			}
 			catch (SQLException e) {
 				throw new DbException(e.getMessage());
 			}
 		}
-		return conn;
+		return connection;
 	}
 	
 	public static void closeConnection() {
-		if (conn != null) {
+		if (connection != null) {
 			try {
-				conn.close();
+				connection.close();
 			} catch (SQLException e) {
 				throw new DbException(e.getMessage());
 			}
@@ -38,30 +38,30 @@ public class DB {
 	}
 	
 	private static Properties loadProperties() {
-		try (FileInputStream fs = new FileInputStream("db.properties")) {
-			Properties props = new Properties();
-			props.load(fs);
-			return props;
+		try (FileInputStream fileInputstream = new FileInputStream("db.properties")) {
+			Properties properties = new Properties();
+			properties.load(fileInputstream);
+			return properties;
 		}
 		catch (IOException e) {
 			throw new DbException(e.getMessage());
 		}
 	}
 	
-	public static void closeStatement(Statement st) {
-		if (st != null) {
+	public static void closeStatement(Statement statment) {
+		if (statment != null) {
 			try {
-				st.close();
+				statment.close();
 			} catch (SQLException e) {
 				throw new DbException(e.getMessage());
 			}
 		}
 	}
 
-	public static void closeResultSet(ResultSet rs) {
-		if (rs != null) {
+	public static void closeResultSet(ResultSet resultSet) {
+		if (resultSet != null) {
 			try {
-				rs.close();
+				resultSet.close();
 			} catch (SQLException e) {
 				throw new DbException(e.getMessage());
 			}
